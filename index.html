@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfólio de Desenvolvimento Web</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', cursive;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            /* Background com formas abstratas: retângulos e círculos */
+            background-image: 
+                /* Triângulos */
+                linear-gradient(45deg, transparent 49%, rgba(200, 160, 255, 0.5) 50%, rgba(200, 160, 255, 0.5) 55%, transparent 56%),
+                linear-gradient(-45deg, transparent 49%, rgba(160, 255, 200, 0.5) 50%, rgba(160, 255, 200, 0.5) 55%, transparent 56%),
+                linear-gradient(135deg, transparent 49%, rgba(160, 200, 255, 0.5) 50%, rgba(160, 200, 255, 0.5) 55%, transparent 56%),
+                linear-gradient(-135deg, transparent 49%, rgba(255, 160, 200, 0.5) 50%, rgba(255, 160, 200, 0.5) 55%, transparent 56%),
+                /* Losangos */
+                linear-gradient(90deg, transparent 49%, rgba(255, 220, 160, 0.5) 50%, rgba(255, 220, 160, 0.5) 55%, transparent 56%),
+                linear-gradient(0deg, transparent 49%, rgba(200, 160, 255, 0.5) 50%, rgba(200, 160, 255, 0.5) 55%, transparent 56%);
+            background-size: 100px 100px; /* Tamanho menor para criar um padrão mais denso */
+            background-attachment: fixed; /* Fixa o padrão para evitar deslocamentos */
+            min-height: 100vh; /* Garante que o body ocupe pelo menos a altura da janela */
+            display: flex;
+            flex-direction: column; /* Organiza os elementos em coluna */
+        }
+
+        main {
+            flex-grow: 1; /* Faz o conteúdo principal ocupar o espaço disponível */
+            padding-bottom: 20px; /* Adiciona um pequeno espaço abaixo do conteúdo */
+        }
+
+        header {
+            background-color: rgb(32, 178, 170);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px solid white;
+            margin-top: 20px 0; /* Espaço de 30px entre a imagem e o topo da página e o nome */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        header h2 {
+            margin: 0;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: rgb(227, 11, 92); /* Preenchimento semi-transparente */
+            text-shadow: 
+                0 0 0 white, /* Preenchimento interno */
+                1px 1px 0 white, /* Contorno externo sólido */
+                -1px -1px 0 white, /* Contorno externo sólido */
+                1px -1px 0 white, /* Contorno externo sólido */
+                -1px 1px 0 white; /* Contorno externo sólido */
+        }
+
+        .sections {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .section-row {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background-color: rgba(255, 255, 240, 0.8);
+            padding: 20px;
+            width: 45%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            color: rgb(102, 51, 153);
+        }
+
+        .section img {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin-right: 20px;
+        }
+
+        .section img:hover {
+            transform: scale(1.1);
+        }
+
+        .section-content {
+            flex: 1;
+        }
+
+        .section h3 {
+            color: rgb(227, 11, 92);
+            text-align: left;
+            font-weight: 800;
+            margin-top: 0;
+        }
+
+        .section p {
+            text-align: justify;
+            margin-top: 10px;
+            font-weight: 200;
+        }
+
+        .links {
+            display: flex;
+            justify-content: flex-start;
+            margin-top: 20px;
+        }
+
+        .links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: rgb(102, 51, 153);
+            font-weight: bold;
+        }
+
+        .links a:hover {
+            color: rgb(227, 11, 92);
+        }
+
+        .popout {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .popout img {
+            max-width: 80vw;
+            max-height: 80vh;
+            border-radius: 10px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .nav-arrows {
+            position: absolute;
+            top: 50%;
+            left: -50px; /* Posiciona o botão esquerdo 10px para fora da imagem */
+            right: -50px; /* Posiciona o botão direito 10px para fora da imagem */
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none; /* Permite clicar na imagem mesmo com os botões sobrepostos */
+        }
+
+        .nav-arrows button {
+            background-color: rgba(227, 11, 92);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 1.2em;
+            pointer-events: auto; /* Habilita cliques nos botões */
+        }
+
+        .nav-arrows button:hover {
+            background-color: rgb(32, 178, 170, 0.8);
+        }
+
+        /* Estilo do botão */
+        .button-container {
+            text-align: center; /* Centraliza o botão */
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            background-color: rgb(227, 11, 92); /* Cor de fundo */
+            color: white; /* Cor do texto */
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .button-container button:hover {
+            background-color: rgb(102, 51, 153); /* Cor de fundo ao passar o mouse */
+        }
+
+        /* Ajustes no popout da nova sessão */
+        #sessionPopout .section {
+            background-color: white;
+            padding: 20px;
+            width: 80%; /* Largura do popout */
+            max-width: 600px; /* Largura máxima */
+            margin: 0 auto; /* Centraliza o conteúdo */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        footer {
+            background-color: rgb(32, 178, 170);
+            color: white;
+            text-align: center; /* Centraliza o texto horizontalmente */
+            padding: 10px 0;
+            font-weight: 800;
+            width: 100%; /* Ocupa toda a largura da página */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="profile.png" alt="Foto de Perfil" class="profile-img">
+        <h1>Letícia Brandão Veiga</h1>
+        <h2>Portfólio de Desenvolvimento de Sistemas</h2>
+    </header>
+
+    <main>
+        <!-- Botão para abrir a nova sessão em popout -->
+        <div class="button-container">
+            <button onclick="openSessionPopout()">Sobre mim</button>
+        </div>
+
+        <!-- Popout para a nova sessão -->
+        <div class="popout" id="sessionPopout">
+            <div class="section">
+                <div class="section-content">
+                    <h3>Sobre mim</h3>
+                    <p>Olá! Me chamo Letícia Veiga e sou estudante do curso de Desenvolvimento de Sistemas na Etec em São José dos Campos. Conheci a programação em 2021, quando estava desenvolvendo meu TCC para o curso de Artes Visuais na PUCCAMP. Para o projeto do TCC, me uni a dois amigos e fiquei responsável por fazer a programação do jogo que decedimos desenvolver. Acabei me apaixonando pela programação de jogos, tendo sido esse meu primeiro contato com a área por meio da linguagem Ren'Py, baseada em Python. Decidi ao fim do curso que eu gostaria de focar nessa mistura entre arte e computação em minha carreira e hoje me encontro estudando para tornar esse sonho uma realidade. Apesar de meu objetivo final ser me tornar uma programadora de jogos, reconheço que outras áreas da computação são interessantes e muito úteis para se ter como repertório. Sendo assim, pretendo investigar e me me manter atualizada sobre cada setor desse universo tecnológico.</p>
+                    <div class="links">
+                        <a href="https://www.linkedin.com/in/lebrandao/" target="_blank">Meu LinkedIn</a>
+                        <a href="https://github.com/letbveiga" target="_blank">Meu GitHub</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sections">
+            <!-- Primeira linha de seções -->
+            <!-- Sessão 1 -->
+            <div class="section-row">
+                <div class="section">
+                    <img src="1 - Getter e Setter/projeto1_main.png" alt="Imagem 1" onclick="openPopout('1 - Getter e Setter/projeto1_main.png', 'popout1')">
+                    <div class="section-content">
+                        <h3>Getter e Setter</h3>
+                        <p>
+                            <span style=font-weight:800>Sobre o Projeto</span>: Atividade para desenvolver o entendimento das funcionalidades "Getter" e "Setter" da linguagem Dart.
+                        </p>
+                        <p>
+                            <span style=font-weight:800>Técnicas e Conceitos Utilizados</span>: ✩-Definição de tipos de objetos; ✩-Inicialização de atributos; ✩-Privatização de atributos;  ✩-Instanciação de objetos; ✩-Leitura de valores de atributos privados; ✩-Modificação de valores de atributos privados; ✩-Uso de interpolação de strings.
+                        </p>
+                        <div class="links">
+                            <a href="https://github.com/letbveiga/Portfolio-DS/tree/main/Getter%20e%20Setter" target="_blank">GitHub do Projeto</a>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Sessão 2 -->
+                <div class="section">
+                    <img src="2 - Construtor/projeto2_main.png" alt="Imagem 2" onclick="openPopout('2 - Construtor/projeto2_main.png', 'popout2')">
+                    <div class="section-content">
+                        <h3>Construtor</h3>
+                        <p>
+                            <span style=font-weight:800>Sobre o Projeto</span>: Atividade para desenvolver o entendimento do uso de construtores da linguagem Dart.
+                        </p>
+                        <p>
+                            <span style=font-weight:800>Técnicas e Conceitos Utilizados</span>: ✩-Inicialização direta dos atributos da classe; ✩-Manipulação de datas com DateTime; ✩-Construção dinâmica de mensagens; ✩-Comparação de variáveis e atributos.
+                        </p>
+                        <div class="links">
+                            <a href="https://github.com/letbveiga/Portfolio-DS/tree/main/Construtor" target="_blank">GitHub do Projeto</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Segunda linha de seções -->
+            <!-- Sessão 3 -->
+            <div class="section-row">
+                <div class="section">
+                    <img src="3 - Return e Condicional/projeto3_main.png" alt="Imagem 3" onclick="openPopout('3 - Return e Condicional/projeto3_main.png', 'popout3')">
+                    <div class="section-content">
+                        <h3>Return e Condicional</h3>
+                        <p>
+                            <span style=font-weight:800>Sobre o Projeto</span>: Atividade para desenvolver o entendimento da funcionalidade "Return" e do uso de condicionais da linguagem Dart.
+                        </p>
+                        <p>
+                            <span style=font-weight:800>Técnicas e Conceitos Utilizados</span>: ✩-Criação de métodos personalizados; ✩-Uso de operadores ternários aninhados; ✩-Interpolação de strings com expressões; ✩-Uso de referência explícita aos atributos da instância; ✩-Retorno condicional de strings.
+                        </p>
+                        <div class="links">
+                            <a href="https://github.com/letbveiga/Portfolio-DS/tree/main/Return%20e%20Condicional" target="_blank">GitHub do Projeto</a>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Sessão 4 -->
+                <div class="section">
+                    <img src="4 - While e If Else/projeto4_main.png" alt="Imagem 4" onclick="openPopout('4 - While e If Else/projeto4_main.png', 'popout4')">
+                    <div class="section-content">
+                        <h3>While e If Else</h3>
+                        <p>
+                            <span style=font-weight:800>Sobre o Projeto</span>: Atividade para desenvolver o entendimento das funcionalidades "While", "If" e "Else" da linguagem Dart.
+                        </p>
+                        <p>
+                            <span style=font-weight:800>Técnicas e Conceitos Utilizados</span>: ✩-Uso de loops para testar eventos; ✩-Incrementação dos atributos ; ✩-Interpolação de strings com condições; ✩-Ajuste condicional de valores; ✩-Flexbox para alinhamento de elementos.
+                        </p>
+                        <div class="links">
+                            <a href="https://github.com/letbveiga/Portfolio-DS/tree/main/While%20e%20If%20Else" target="_blank">GitHub do Projeto</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Terceira linha de seções -->
+            <!-- Sessão 5 -->
+            <div class="section-row">
+                <div class="section">
+                    <img src="5 - Calculadora com Flutter/projeto5_main.png" alt="Imagem 5" onclick="openPopout('5 - Calculadora com Flutter/projeto5_main.png', 'popout5')">
+                    <div class="section-content">
+                        <h3>Calculadora</h3>
+                        <p>
+                            <span style=font-weight:800>Sobre o Projeto</span>: Atividade para desenvolver o entendimento da funcionalidade do Flutter.
+                        </p>
+                        <p>
+                            <span style=font-weight:800>Técnicas e Conceitos Utilizados</span>: ✩-Operações matemáticas básicas; ✩-Uso de operadores ternários aninhados; ✩-Interpolação de strings com expressões; ✩-Uso de referência explícita aos atributos da instância; ✩-Retorno condicional de strings.
+                        </p>
+                        <div class="links">
+                            <a href="https://github.com/letbveiga/Portfolio-DS/tree/main/Calculadora" target="_blank">GitHub do Projeto</a>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- Sessão 6 -->
+                <div class="section">
+                    <img src="6 - Diversos com Flutter/Hora/projeto6_main.png" alt="Imagem 6" onclick="openPopout('6 - Diversos com Flutter/Hora/projeto6_main.png', 'popout6')">
+                    <div class="section-content">
+                        <h3>Widgets</h3>
+                        <p>
+                            <span style=font-weight:800>Sobre o Projeto</span>: Atividades para desenvolver o domínio sobre a linguagem Dart e a biblioteca Flutter.
+                        </p>
+                        <p>
+                            <span style=font-weight:800>Técnicas e Conceitos Utilizados</span>: ✩-Operações matemáticas básicas; ✩-Estruturas condicionais (if/else); ✩-Manipulação de strings (interpolação); ✩-Cálculos com datas (DateTime.now().year); ✩-Classes separadas para diferentes funcionalidades; ✩-Classes separadas para diferentes funcionalidades; ✩-Métodos para encapsular lógica específica; ✩-Organização hierárquica de widgets.
+                        </p>
+                        <div class="links">
+                            <a href="https://github.com/letbveiga/Portfolio-DS/tree/main/Widgets" target="_blank">GitHub do Projeto</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popout para a primeira sessão -->
+        <div class="popout" id="popout1">
+            <div class="nav-arrows">
+                <button onclick="changeImage(-1, 'popout1')">&lt;</button>
+                <button onclick="changeImage(1, 'popout1')">&gt;</button>
+            </div>
+            <img src="1 - Getter e Setter/projeto1_main.png" alt="Imagem 1">
+        </div>
+
+        <!-- Popout para a segunda sessão -->
+        <div class="popout" id="popout2">
+            <div class="nav-arrows">
+                <button onclick="changeImage(-1, 'popout2')">&lt;</button>
+                <button onclick="changeImage(1, 'popout2')">&gt;</button>
+            </div>
+            <img src="2 - Construtor/projeto2_main.png" alt="Imagem 2">
+        </div>
+
+        <!-- Popout para a terceira sessão -->
+        <div class="popout" id="popout3">
+            <div class="nav-arrows">
+                <button onclick="changeImage(-1, 'popout3')">&lt;</button>
+                <button onclick="changeImage(1, 'popout3')">&gt;</button>
+            </div>
+            <img src="3 - Return e Condicional/projeto3_main.png" alt="Imagem 3">
+        </div>
+
+        <!-- Popout para a quarta sessão -->
+        <div class="popout" id="popout4">
+            <div class="nav-arrows">
+                <button onclick="changeImage(-1, 'popout4')">&lt;</button>
+                <button onclick="changeImage(1, 'popout4')">&gt;</button>
+            </div>
+            <img src="4 - While e If Else/projeto4_main.png" alt="Imagem 4">
+        </div>
+
+        <!-- Popout para a quinta sessão -->
+        <div class="popout" id="popout5">
+            <div class="nav-arrows">
+                <button onclick="changeImage(-1, 'popout5')">&lt;</button>
+                <button onclick="changeImage(1, 'popout5')">&gt;</button>
+            </div>
+            <img src="5 - Calculadora com Flutter/projeto5_main.png" alt="Imagem 5">
+        </div>
+
+        <!-- Popout para a sexta sessão -->
+        <div class="popout" id="popout6">
+            <div class="nav-arrows">
+                <button onclick="changeImage(-1, 'popout6')">&lt;</button>
+                <button onclick="changeImage(1, 'popout6')">&gt;</button>
+            </div>
+            <img src="6 - Diversos com Flutter/Hora/projeto6_main.png" alt="Imagem 6">
+        </div>
+
+        <!-- Overlay -->
+        <div class="overlay" id="overlay" onclick="closePopout()"></div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <!-- <div class="footer-links"> -->
+            <p>Atualizado em 2025</p>
+        <!-- </div> -->
+    </footer>
+
+    <script>
+        const images = {
+            popout1: ['1 - Getter e Setter/projeto1_main.png', '1 - Getter e Setter/projeto1-1.png'],
+            popout2: ['2 - Construtor/projeto2_main.png', '2 - Construtor/projeto2-1.png'],
+            popout3: ['3 - Return e Condicional/projeto3_main.png', '3 - Return e Condicional/projeto3-1.png', '3 - Return e Condicional/projeto3-2.png', '3 - Return e Condicional/projeto3-3.png'],
+            popout4: ['4 - While e If Else/projeto4_main.png', '4 - While e If Else/projeto4-1.png', '4 - While e If Else/projeto4-2.png', '4 - While e If Else/projeto4-3.png', '4 - While e If Else/projeto4-4.png', '4 - While e If Else/projeto4-5.png', '4 - While e If Else/projeto4-6.png', '4 - While e If Else/projeto4-7.png'],
+            popout5: ['5 - Calculadora com Flutter/projeto5_main.png', '5 - Calculadora com Flutter/projeto5-1.png', '5 - Calculadora com Flutter/projeto5-2.png', '5 - Calculadora com Flutter/projeto5-3.png', '5 - Calculadora com Flutter/projeto5-4.png', '5 - Calculadora com Flutter/projeto5-5.png', '5 - Calculadora com Flutter/projeto5-6.png'],
+            popout6: ['6 - Diversos com Flutter/Hora/projeto6_main.png', '6 - Diversos com Flutter/Hora/projeto6.1-1.png', '6 - Diversos com Flutter/Idade/projeto6.2-1.png', '6 - Diversos com Flutter/Idade/projeto6.2-2.png', '6 - Diversos com Flutter/Compra/projeto6.3-1.png', '6 - Diversos com Flutter/Compra/projeto6.3-2.png', '6 - Diversos com Flutter/Salário/projeto6.4-1.png', '6 - Diversos com Flutter/Salário/projeto6.4-2.png']
+        };
+        let currentIndex = { popout1: 0, popout2: 0, popout3: 0, popout4: 0, popout5: 0, popout6: 0 };
+
+        function openPopout(imgSrc, popoutId) {
+            const popout = document.getElementById(popoutId);
+            const overlay = document.getElementById('overlay');
+            popout.style.display = 'block';
+            overlay.style.display = 'block';
+            currentIndex[popoutId] = images[popoutId].indexOf(imgSrc);
+            popout.querySelector('img').src = imgSrc;
+        }
+
+        function closePopout() {
+            document.querySelectorAll('.popout').forEach(popout => {
+                popout.style.display = 'none';
+            });
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function changeImage(direction, popoutId) {
+            const popout = document.getElementById(popoutId);
+            const totalImages = images[popoutId].length;
+            currentIndex[popoutId] = (currentIndex[popoutId] + direction + totalImages) % totalImages;
+            popout.querySelector('img').src = images[popoutId][currentIndex[popoutId]];
+        }
+
+        function openSessionPopout() {
+            const popout = document.getElementById('sessionPopout');
+            const overlay = document.getElementById('overlay');
+            popout.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
